@@ -1,0 +1,19 @@
+.welcome {
+  background-color: lightgray;
+  width: 400px;
+  padding: 30px;
+  margin: 50px;
+  border: 2px solid black;
+}
+
+.welcome h1 {
+  margin-bottom: 20px;
+}
+
+.welcome p {
+  margin-bottom: 20px;
+}
+
+.welcome button {
+  padding: 10px 20px;
+}

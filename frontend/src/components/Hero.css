@@ -1,77 +1,541 @@
+/* =========================================================
+   HERO SECTION
+   ========================================================= */
+
 .hero {
-  display: flex;
+  /* Hauteur minimale :
+     toute la hauteur de l'écran moins la navbar */
+  min-height: calc(100vh - 76px);
+
+  /* Deux colonnes :
+     une pour le texte
+     une pour l'image */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
   align-items: center;
-  justify-content: space-between;
 
-  min-height: 80vh;
+  gap: 60px;
 
-  padding: 60px 8%;
+  padding: 70px 8%;
+
+  background-color: #f7f7f7;
+
+  /* Empêche certains effets ou images
+     de dépasser horizontalement */
+  overflow: hidden;
 }
+
+
+/* =========================================================
+   CONTENU GAUCHE
+   ========================================================= */
 
 .hero-content {
-  width: 50%;
+  max-width: 650px;
+
+  animation: heroContentEnter 0.7s ease forwards;
 }
+
+
+/* =========================================================
+   PETIT BADGE AU-DESSUS DU TITRE
+   ========================================================= */
+
+.hero-badge {
+  display: inline-block;
+
+  margin-bottom: 24px;
+
+  padding: 8px 14px;
+
+  background-color: white;
+
+  border: 1px solid #e4e4e4;
+  border-radius: 50px;
+
+  color: #555;
+
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   TITRE PRINCIPAL
+   ========================================================= */
 
 .hero-content h1 {
-  font-size: 3rem;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+
+  /*
+    Taille responsive :
+    minimum : 2.8rem
+    idéale : 6vw
+    maximum : 5.5rem
+  */
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+
+  line-height: 0.95;
+
+  letter-spacing: -3px;
+
+  font-weight: 800;
+
+  color: #111;
 }
 
-.hero-content p {
-  font-size: 1.2rem;
-  line-height: 1.6;
 
-  margin-bottom: 30px;
+/* Deuxième partie du titre */
+
+.hero-content h1 span {
+  display: block;
+
+  color: #777;
 }
 
-.hero-content button {
-  padding: 14px 24px;
 
-  background-color: black;
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.hero-description {
+  max-width: 540px;
+
+  margin-bottom: 34px;
+
+  color: #666;
+
+  font-size: 1.1rem;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   ZONE DES BOUTONS
+   ========================================================= */
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 24px;
+
+  margin-bottom: 40px;
+}
+
+
+/* =========================================================
+   BOUTON PRINCIPAL
+   ========================================================= */
+
+.hero-primary-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 15px 24px;
+
+  background-color: #111;
   color: white;
 
-  border: none;
-  border-radius: 6px;
+  border: 1px solid #111;
+  border-radius: 50px;
 
-  cursor: pointer;
+  text-decoration: none;
 
-  font-size: 1rem;
+  font-weight: 600;
+
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
+
+
+/* Animation du bouton principal */
+
+.hero-primary-button:hover {
+  transform: translateY(-3px);
+
+  background-color: #292929;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.16);
+}
+
+
+/* Effet au moment du clic */
+
+.hero-primary-button:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   BOUTON SECONDAIRE
+   ========================================================= */
+
+.hero-secondary-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #222;
+
+  text-decoration: none;
+
+  font-weight: 600;
+}
+
+
+/* La flèche */
+
+.hero-secondary-button span {
+  transition: transform 0.25s ease;
+}
+
+
+/* La flèche avance légèrement */
+
+.hero-secondary-button:hover span {
+  transform: translateX(5px);
+}
+
+
+/* =========================================================
+   PETITS AVANTAGES
+   ========================================================= */
+
+.hero-features {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 12px 24px;
+
+  color: #666;
+
+  font-size: 0.85rem;
+}
+
+
+/* Chaque avantage */
+
+.hero-features span {
+  position: relative;
+
+  padding-left: 16px;
+}
+
+
+/* Petit point créé uniquement avec CSS */
+
+.hero-features span::before {
+  content: '';
+
+  position: absolute;
+
+  left: 0;
+  top: 50%;
+
+  width: 6px;
+  height: 6px;
+
+  background-color: #111;
+
+  border-radius: 50%;
+
+  transform: translateY(-50%);
+}
+
+
+/* =========================================================
+   PARTIE DROITE : IMAGE
+   ========================================================= */
+
+.hero-visual {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* Conteneur de l'image */
+
+.hero-image-wrapper {
+  position: relative;
+
+  width: 100%;
+  max-width: 620px;
+  max-height: 500px;
+
+  aspect-ratio: 5 / 4;
+
+  overflow: hidden;
+
+  border-radius: 30px;
+
+  background-color: #ececec;
+
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.12);
+
+  animation: heroImageEnter 0.8s ease forwards;
+}
+
+/* =========================================================
+   IMAGE
+   ========================================================= */
 
 .hero-image {
-  width: 45%;
-}
+  display: block;
 
-.hero-image img {
   width: 100%;
-  height: 450px;
+  height: 100%;
 
   object-fit: cover;
 
-  border-radius: 20px;
+  transition: transform 0.8s ease;
 }
 
-@media (max-width: 768px) {
-  .hero {
-    flex-direction: column;
 
-    padding: 40px 20px;
+/* Zoom léger au survol */
+
+.hero-image-wrapper:hover .hero-image {
+  transform: scale(1.04);
+}
+
+
+/* =========================================================
+   PETITE CARTE DE PRIX FLOTTANTE
+   ========================================================= */
+
+.hero-floating-card {
+  position: absolute;
+
+  left: 24px;
+  bottom: 24px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  padding: 16px 20px;
+
+  background-color: rgba(255, 255, 255, 0.92);
+
+  backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255, 255, 255, 0.6);
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+/* Petit texte "À partir de" */
+
+.hero-floating-card span {
+  color: #777;
+
+  font-size: 0.75rem;
+}
+
+
+/* Prix */
+
+.hero-floating-card strong {
+  color: #111;
+
+  font-size: 1.4rem;
+}
+
+
+/* =========================================================
+   ANIMATION D'ARRIVÉE DU TEXTE
+   ========================================================= */
+
+@keyframes heroContentEnter {
+  from {
+    opacity: 0;
+
+    transform: translateY(25px);
   }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   ANIMATION D'ARRIVÉE DE L'IMAGE
+   ========================================================= */
+
+@keyframes heroImageEnter {
+  from {
+    opacity: 0;
+
+    transform: translateX(40px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateX(0);
+  }
+}
+
+
+/* =========================================================
+   TABLETTE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .hero {
+    /* On passe de deux colonnes à une seule */
+    grid-template-columns: 1fr;
+
+    gap: 50px;
+
+    min-height: auto;
+
+    padding: 60px 6%;
+  }
+
 
   .hero-content {
-    width: 100%;
-    margin-bottom: 40px;
+    max-width: 700px;
   }
+
+
+  .hero-image-wrapper {
+    max-width: 700px;
+
+    /*
+      Image plus horizontale sur tablette
+    */
+    aspect-ratio: 16 / 11;
+  }
+}
+
+
+/* =========================================================
+   TÉLÉPHONE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .hero {
+    gap: 40px;
+
+    padding: 45px 20px;
+  }
+
+
+  /* Titre adapté aux petits écrans */
 
   .hero-content h1 {
-    font-size: 2rem;
+    font-size: clamp(2.5rem, 13vw, 4rem);
+
+    line-height: 1;
+
+    letter-spacing: -2px;
   }
 
-  .hero-image {
+
+  .hero-description {
+    font-size: 1rem;
+  }
+
+
+  /* Les boutons passent les uns sous les autres */
+
+  .hero-actions {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 16px;
+  }
+
+
+  .hero-primary-button {
     width: 100%;
   }
 
-  .hero-image img {
-    height: 300px;
+
+  .hero-secondary-button {
+    justify-content: center;
+  }
+
+
+  /* Les avantages passent verticalement */
+
+  .hero-features {
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+
+  /* Image plus verticale sur téléphone */
+
+  .hero-image-wrapper {
+    aspect-ratio: 4 / 5;
+
+    border-radius: 22px;
+  }
+
+
+  /* Carte de prix légèrement plus petite */
+
+  .hero-floating-card {
+    left: 16px;
+    bottom: 16px;
+
+    padding: 12px 16px;
+
+    border-radius: 14px;
+  }
+
+
+  .hero-floating-card strong {
+    font-size: 1.2rem;
+  }
+}
+
+
+/* =========================================================
+   ACCESSIBILITÉ :
+   UTILISATEUR QUI PRÉFÈRE MOINS D'ANIMATIONS
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .hero-content,
+  .hero-image-wrapper {
+    animation: none;
+  }
+
+
+  .hero-primary-button,
+  .hero-secondary-button span,
+  .hero-image {
+    transition: none;
   }
 }

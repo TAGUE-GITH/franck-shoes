@@ -1,17 +1,50 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import {
+  useState
+} from 'react'
+
+import {
+  Link,
+  useNavigate
+} from 'react-router-dom'
+
+import { useAuth } from '../context/AuthContext'
 
 import './Navbar.css'
 
-function Navbar({ cartCount }) {
-  const [menuOpen, setMenuOpen] = useState(false)
+
+function Navbar({
+  cartCount
+}) {
+  const [menuOpen, setMenuOpen] =
+    useState(false)
+
+  const navigate =
+    useNavigate()
+
+  const {
+    user,
+    isAdmin,
+    logout
+  } = useAuth()
+
 
   function closeMenu() {
     setMenuOpen(false)
   }
 
+
+  function handleLogout() {
+    logout()
+
+    closeMenu()
+
+    navigate('/')
+  }
+
+
   return (
     <header className="navbar-wrapper">
+
       <nav className="navbar">
 
         <Link
@@ -19,11 +52,23 @@ function Navbar({ cartCount }) {
           className="navbar-logo"
           onClick={closeMenu}
         >
-          <span>FRANCK</span>
-          <strong>SHOES</strong>
+          <span>
+            FRANCK
+          </span>
+
+          <strong>
+            SHOES
+          </strong>
         </Link>
 
-        <div className={menuOpen ? 'nav-links open' : 'nav-links'}>
+
+        <div
+          className={
+            menuOpen
+              ? 'nav-links open'
+              : 'nav-links'
+          }
+        >
 
           <Link
             to="/"
@@ -32,6 +77,7 @@ function Navbar({ cartCount }) {
             Accueil
           </Link>
 
+
           <Link
             to="/products"
             onClick={closeMenu}
@@ -39,12 +85,51 @@ function Navbar({ cartCount }) {
             Chaussures
           </Link>
 
+
           <Link
             to="/about"
             onClick={closeMenu}
           >
             À propos
           </Link>
+
+
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="admin-link"
+              onClick={closeMenu}
+            >
+              Administration
+            </Link>
+          )}
+
+
+          {user ? (
+            <div className="navbar-user">
+
+              <span className="navbar-user-name">
+                Bonjour {user.first_name}
+              </span>
+
+              <button
+                type="button"
+                className="logout-button"
+                onClick={handleLogout}
+              >
+                Déconnexion
+              </button>
+
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              onClick={closeMenu}
+            >
+              Connexion
+            </Link>
+          )}
+
 
           <Link
             to="/cart"
@@ -60,12 +145,27 @@ function Navbar({ cartCount }) {
 
         </div>
 
+
         <button
           type="button"
-          className={menuOpen ? 'hamburger open' : 'hamburger'}
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
-          aria-expanded={menuOpen}
+          className={
+            menuOpen
+              ? 'hamburger open'
+              : 'hamburger'
+          }
+          onClick={() =>
+            setMenuOpen(
+              !menuOpen
+            )
+          }
+          aria-label={
+            menuOpen
+              ? 'Fermer le menu'
+              : 'Ouvrir le menu'
+          }
+          aria-expanded={
+            menuOpen
+          }
         >
           <span></span>
           <span></span>
@@ -73,8 +173,10 @@ function Navbar({ cartCount }) {
         </button>
 
       </nav>
+
     </header>
   )
 }
+
 
 export default Navbar

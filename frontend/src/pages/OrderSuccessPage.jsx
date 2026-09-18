@@ -19,7 +19,6 @@ function OrderSuccessPage() {
   const location =
     useLocation()
 
-
   const order =
     location.state?.order
 
@@ -47,10 +46,13 @@ function OrderSuccessPage() {
         <p>
           Votre commande
           {' '}
+
           <strong>
             #{id}
           </strong>
+
           {' '}
+
           a bien été enregistrée.
         </p>
 
@@ -60,6 +62,7 @@ function OrderSuccessPage() {
           <div className="order-success-summary">
 
             <div>
+
               <span>
                 Total
               </span>
@@ -69,10 +72,12 @@ function OrderSuccessPage() {
                   order.total
                 )}
               </strong>
+
             </div>
 
 
             <div>
+
               <span>
                 Livraison
               </span>
@@ -80,17 +85,20 @@ function OrderSuccessPage() {
               <strong>
                 {order.city}
               </strong>
+
             </div>
 
 
             <div>
+
               <span>
                 Statut
               </span>
 
               <strong>
-                En attente
+                {order.status_label}
               </strong>
+
             </div>
 
           </div>
@@ -100,15 +108,28 @@ function OrderSuccessPage() {
 
         <div className="order-success-actions">
 
-          <Link to="/products">
-            Continuer mes achats
+          <Link
+            to={
+              `/account/orders/${id}`
+            }
+          >
+            Voir ma commande
           </Link>
 
+
           <Link
-            to="/"
+            to="/account/orders"
             className="secondary"
           >
-            Retour à l'accueil
+            Mes commandes
+          </Link>
+
+
+          <Link
+            to="/products"
+            className="secondary"
+          >
+            Continuer mes achats
           </Link>
 
         </div>

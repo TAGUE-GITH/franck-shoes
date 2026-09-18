@@ -3,7 +3,9 @@ import {
   Outlet
 } from 'react-router-dom'
 
-import { useAuth } from '../context/AuthContext'
+import {
+  useAuth
+} from '../context/AuthContext'
 
 import './AdminLayout.css'
 
@@ -13,12 +15,14 @@ function AdminLayout() {
     user
   } = useAuth()
 
+
   return (
     <div className="admin-layout">
 
       <aside className="admin-sidebar">
 
         <div className="admin-sidebar-brand">
+
           <span>
             FRANCK
           </span>
@@ -30,6 +34,7 @@ function AdminLayout() {
           <small>
             Administration
           </small>
+
         </div>
 
 
@@ -60,15 +65,26 @@ function AdminLayout() {
           </NavLink>
 
 
-          <span className="admin-nav-disabled">
+          <NavLink
+            to="/admin/orders"
+            className={({ isActive }) =>
+              isActive
+                ? 'admin-nav-link active'
+                : 'admin-nav-link'
+            }
+          >
             Commandes
-            <small>Bientôt</small>
-          </span>
+          </NavLink>
 
 
           <span className="admin-nav-disabled">
+
             Clients
-            <small>Bientôt</small>
+
+            <small>
+              Bientôt
+            </small>
+
           </span>
 
         </nav>

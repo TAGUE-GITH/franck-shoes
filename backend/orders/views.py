@@ -2,6 +2,7 @@ from rest_framework import status
 
 from rest_framework.permissions import (
     AllowAny,
+    IsAdminUser,
     IsAuthenticated,
 )
 
@@ -19,13 +20,17 @@ from .serializers import (
     OrderSerializer,
 )
 
+from .services import (
+    cancel_order,
+    update_order_by_admin,
+)
+
 
 class DeliveryFeesView(APIView):
 
     permission_classes = [
         AllowAny
     ]
-
 
     def get(
         self,
@@ -43,7 +48,6 @@ class OrderListCreateView(APIView):
         IsAuthenticated
     ]
 
-
     def get(
         self,
         request
@@ -54,24 +58,24 @@ class OrderListCreateView(APIView):
                 user=request.user
             )
             .prefetch_related(
-                'items'
+                'items__product'
             )
         )
-
 
         serializer = (
             OrderSerializer(
                 orders,
-                many=True
+                many=True,
+                context={
+                    'request': request
+                }
             )
         )
-
 
         return Response(
             serializer.data,
             status=status.HTTP_200_OK
         )
-
 
     def post(
         self,
@@ -86,23 +90,22 @@ class OrderListCreateView(APIView):
             )
         )
 
-
         serializer.is_valid(
             raise_exception=True
         )
-
 
         order = (
             serializer.save()
         )
 
-
         response_serializer = (
             OrderSerializer(
-                order
+                order,
+                context={
+                    'request': request
+                }
             )
         )
-
 
         return Response(
             response_serializer.data,
@@ -116,7 +119,6 @@ class OrderDetailView(APIView):
         IsAuthenticated
     ]
 
-
     def get(
         self,
         request,
@@ -129,7 +131,7 @@ class OrderDetailView(APIView):
                 order = (
                     Order.objects
                     .prefetch_related(
-                        'items'
+                        'items__product'
                     )
                     .get(
                         pk=pk
@@ -141,7 +143,7 @@ class OrderDetailView(APIView):
                 order = (
                     Order.objects
                     .prefetch_related(
-                        'items'
+                        'items__product'
                     )
                     .get(
                         pk=pk,
@@ -159,13 +161,184 @@ class OrderDetailView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-
         serializer = (
             OrderSerializer(
-                order
+                order,
+                context={
+                    'request': request
+                }
             )
         )
 
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK
+        )
+
+
+class CancelOrderView(APIView):
+
+    permission_classes = [
+        IsAuthenticated
+    ]
+
+    def post(
+        self,
+        request,
+        pk
+    ):
+        order = cancel_order(
+            order_id=pk,
+            user=request.user
+        )
+
+        serializer = (
+            OrderSerializer(
+                order,
+                context={
+                    'request': request
+                }
+            )
+        )
+
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK
+        )
+
+
+class AdminOrderListView(APIView):
+
+    permission_classes = [
+        IsAdminUser
+    ]
+
+    def get(
+        self,
+        request
+    ):
+        orders = (
+            Order.objects
+            .select_related(
+                'user'
+            )
+            .prefetch_related(
+                'items__product'
+            )
+            .order_by(
+                '-created_at'
+            )
+        )
+
+        serializer = (
+            OrderSerializer(
+                orders,
+                many=True,
+                context={
+                    'request': request
+                }
+            )
+        )
+
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK
+        )
+
+
+class AdminOrderDetailView(APIView):
+
+    permission_classes = [
+        IsAdminUser
+    ]
+
+    def get(
+        self,
+        request,
+        pk
+    ):
+        try:
+            order = (
+                Order.objects
+                .select_related(
+                    'user'
+                )
+                .prefetch_related(
+                    'items__product'
+                )
+                .get(
+                    pk=pk
+                )
+            )
+
+        except Order.DoesNotExist:
+            return Response(
+                {
+                    'message':
+                        'Commande introuvable.'
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = (
+            OrderSerializer(
+                order,
+                context={
+                    'request': request
+                }
+            )
+        )
+
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK
+        )
+
+    def patch(
+        self,
+        request,
+        pk
+    ):
+        new_status = (
+            request.data.get(
+                'status'
+            )
+        )
+
+        new_payment_status = (
+            request.data.get(
+                'payment_status'
+            )
+        )
+
+        if (
+            new_status is None
+            and
+            new_payment_status is None
+        ):
+            return Response(
+                {
+                    'message':
+                        'Aucune modification fournie.'
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        order = update_order_by_admin(
+            order_id=pk,
+            new_status=new_status,
+            new_payment_status=
+                new_payment_status
+        )
+
+        serializer = (
+            OrderSerializer(
+                order,
+                context={
+                    'request': request
+                }
+            )
+        )
 
         return Response(
             serializer.data,

@@ -1,0 +1,283 @@
+.admin-orders-page {
+  min-height: 100%;
+
+  padding:
+    55px 5% 80px;
+}
+
+
+.admin-orders-header {
+  margin-bottom: 35px;
+}
+
+
+.admin-orders-header span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #777;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.3px;
+}
+
+
+.admin-orders-header h1 {
+  margin-bottom: 10px;
+
+  font-size:
+    clamp(
+      2.3rem,
+      4vw,
+      3.6rem
+    );
+
+  letter-spacing: -2px;
+}
+
+
+.admin-orders-header p {
+  color: #777;
+
+  line-height: 1.6;
+}
+
+
+.admin-orders-toolbar {
+  display: flex;
+
+  gap: 15px;
+
+  margin-bottom: 22px;
+
+  padding: 16px;
+
+  background-color: white;
+
+  border:
+    1px solid #e8e8e8;
+
+  border-radius: 16px;
+}
+
+
+.admin-orders-toolbar input,
+.admin-orders-toolbar select {
+  padding: 12px 14px;
+
+  background-color: white;
+
+  border:
+    1px solid #ddd;
+
+  border-radius: 10px;
+
+  font: inherit;
+
+  outline: none;
+}
+
+
+.admin-orders-toolbar input {
+  flex: 1;
+}
+
+
+.admin-orders-toolbar select {
+  min-width: 210px;
+}
+
+
+.admin-orders-toolbar input:focus,
+.admin-orders-toolbar select:focus {
+  border-color: #111;
+}
+
+
+.admin-orders-error {
+  margin-bottom: 20px;
+
+  padding: 14px;
+
+  background-color: #fff0f0;
+
+  color: #a33;
+
+  border-radius: 12px;
+}
+
+
+.admin-orders-state {
+  padding: 70px 30px;
+
+  background-color: white;
+
+  color: #777;
+
+  border:
+    1px solid #e8e8e8;
+
+  border-radius: 18px;
+
+  text-align: center;
+}
+
+
+.admin-orders-table-wrapper {
+  overflow-x: auto;
+
+  background-color: white;
+
+  border:
+    1px solid #e8e8e8;
+
+  border-radius: 18px;
+}
+
+
+.admin-orders-table {
+  width: 100%;
+
+  min-width: 950px;
+
+  border-collapse: collapse;
+}
+
+
+.admin-orders-table th {
+  padding: 16px 18px;
+
+  background-color: #fafafa;
+
+  color: #777;
+
+  font-size: 0.72rem;
+
+  text-align: left;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.7px;
+}
+
+
+.admin-orders-table td {
+  padding: 18px;
+
+  border-top:
+    1px solid #eee;
+}
+
+
+.admin-order-customer {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+
+.admin-order-customer span {
+  color: #888;
+
+  font-size: 0.8rem;
+}
+
+
+.admin-order-status {
+  display: inline-block;
+
+  padding: 7px 10px;
+
+  border-radius: 50px;
+
+  font-size: 0.72rem;
+
+  font-weight: 700;
+}
+
+
+.admin-order-status.pending {
+  background-color: #fff6dd;
+
+  color: #8a6814;
+}
+
+
+.admin-order-status.confirmed {
+  background-color: #e8f1ff;
+
+  color: #315f9c;
+}
+
+
+.admin-order-status.preparing {
+  background-color: #f1ebff;
+
+  color: #65439d;
+}
+
+
+.admin-order-status.shipped {
+  background-color: #e5f5ff;
+
+  color: #247293;
+}
+
+
+.admin-order-status.delivered {
+  background-color: #eaf8ed;
+
+  color: #31783a;
+}
+
+
+.admin-order-status.cancelled {
+  background-color: #eee;
+
+  color: #777;
+}
+
+
+.admin-order-view {
+  padding: 8px 13px;
+
+  background-color: #111;
+
+  color: white;
+
+  border-radius: 50px;
+
+  text-decoration: none;
+
+  font-size: 0.8rem;
+
+  font-weight: 600;
+}
+
+
+@media (max-width: 700px) {
+
+  .admin-orders-page {
+    padding:
+      35px 20px 60px;
+  }
+
+
+  .admin-orders-toolbar {
+    flex-direction: column;
+  }
+
+
+  .admin-orders-toolbar select {
+    width: 100%;
+
+    min-width: 0;
+  }
+}

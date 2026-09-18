@@ -1,4 +1,5 @@
 import {
+  useEffect,
   useState
 } from 'react'
 
@@ -21,29 +22,86 @@ import ProductsPage from './pages/ProductsPage'
 import ProductPage from './pages/ProductPage'
 import CartPage from './pages/CartPage'
 import AboutPage from './pages/AboutPage'
+
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 
 import CheckoutPage from './pages/CheckoutPage'
 import OrderSuccessPage from './pages/OrderSuccessPage'
+import MyOrdersPage from './pages/MyOrdersPage'
+import OrderDetailPage from './pages/OrderDetailPage'
 
 import AdminDashboardPage from './pages/AdminDashboardPage'
 import AdminProductsPage from './pages/AdminProductsPage'
 import AdminProductFormPage from './pages/AdminProductFormPage'
+import AdminOrdersPage from './pages/AdminOrdersPage'
+import AdminOrderDetailPage from './pages/AdminOrderDetailPage'
 
 
 import './App.css'
 
 
+const CART_STORAGE_KEY =
+  'franck_shoes_cart'
+
+
+function loadSavedCart() {
+  try {
+    const savedCart =
+      localStorage.getItem(
+        CART_STORAGE_KEY
+      )
+
+    if (!savedCart) {
+      return []
+    }
+
+    const parsedCart =
+      JSON.parse(
+        savedCart
+      )
+
+    if (
+      !Array.isArray(
+        parsedCart
+      )
+    ) {
+      return []
+    }
+
+    return parsedCart
+
+  } catch {
+
+    return []
+  }
+}
+
+
 function App() {
-  const [cart, setCart] =
-    useState([])
+  const [
+    cart,
+    setCart
+  ] = useState(
+    loadSavedCart
+  )
+
+
+  useEffect(() => {
+    localStorage.setItem(
+      CART_STORAGE_KEY,
+      JSON.stringify(
+        cart
+      )
+    )
+  }, [cart])
 
 
   function addToCart(
     product,
-    size
+    size,
+    quantity = 1
   ) {
     const selectedVariant =
       product.sizes.find(
@@ -61,8 +119,16 @@ function App() {
     }
 
 
+    const safeQuantity =
+      Math.max(
+        1,
+        Number(quantity) || 1
+      )
+
+
     setCart(
       (currentCart) => {
+
         const existingProduct =
           currentCart.find(
             (item) =>
@@ -83,19 +149,20 @@ function App() {
                 Number(size)
               ) {
 
-                if (
-                  item.quantity >=
-                  selectedVariant.stock
-                ) {
-                  return item
-                }
+                const newQuantity =
+                  Math.min(
+                    item.quantity +
+                    safeQuantity,
+
+                    selectedVariant.stock
+                  )
 
 
                 return {
                   ...item,
 
                   quantity:
-                    item.quantity + 1,
+                    newQuantity,
 
                   stock:
                     selectedVariant.stock
@@ -120,7 +187,11 @@ function App() {
             stock:
               selectedVariant.stock,
 
-            quantity: 1
+            quantity:
+              Math.min(
+                safeQuantity,
+                selectedVariant.stock
+              )
           }
         ]
       }
@@ -248,7 +319,9 @@ function App() {
 
         <Route
           path="/"
-          element={<Home />}
+          element={
+            <Home />
+          }
         />
 
 
@@ -309,12 +382,15 @@ function App() {
           element={
             <CartPage
               cart={cart}
+
               onIncrease={
                 increaseQuantity
               }
+
               onDecrease={
                 decreaseQuantity
               }
+
               onRemove={
                 removeFromCart
               }
@@ -330,6 +406,7 @@ function App() {
 
               <CheckoutPage
                 cart={cart}
+
                 onClearCart={
                   clearCart
                 }
@@ -346,6 +423,34 @@ function App() {
             <ProtectedRoute>
 
               <OrderSuccessPage />
+
+            </ProtectedRoute>
+          }
+        />
+
+
+        <Route
+          path="/account/orders"
+          element={
+            <ProtectedRoute>
+
+              <MyOrdersPage />
+
+            </ProtectedRoute>
+          }
+        />
+
+
+        <Route
+          path="/account/orders/:id"
+          element={
+            <ProtectedRoute>
+
+              <OrderDetailPage
+                onAddToCart={
+                  addToCart
+                }
+              />
 
             </ProtectedRoute>
           }
@@ -391,6 +496,22 @@ function App() {
             path="products/:id/edit"
             element={
               <AdminProductFormPage />
+            }
+          />
+
+
+          <Route
+            path="orders"
+            element={
+              <AdminOrdersPage />
+            }
+          />
+
+
+          <Route
+            path="orders/:id"
+            element={
+              <AdminOrderDetailPage />
             }
           />
 

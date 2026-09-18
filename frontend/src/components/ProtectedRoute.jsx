@@ -3,33 +3,39 @@ import {
   useLocation
 } from 'react-router-dom'
 
-import { useAuth } from '../context/AuthContext'
+import {
+  useAuth
+} from '../context/AuthContext'
 
 
 function ProtectedRoute({
   children
 }) {
+  const location =
+    useLocation()
+
+
   const {
     isAuthenticated,
     loading
   } = useAuth()
 
-  const location =
-    useLocation()
-
 
   if (loading) {
     return (
-      <main
+      <div
         style={{
           minHeight: '60vh',
+
           display: 'flex',
+
           alignItems: 'center',
+
           justifyContent: 'center'
         }}
       >
         Chargement...
-      </main>
+      </div>
     )
   }
 

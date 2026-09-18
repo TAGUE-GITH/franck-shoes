@@ -7,7 +7,9 @@ import {
   useNavigate
 } from 'react-router-dom'
 
-import { useAuth } from '../context/AuthContext'
+import {
+  useAuth
+} from '../context/AuthContext'
 
 import './Navbar.css'
 
@@ -15,11 +17,15 @@ import './Navbar.css'
 function Navbar({
   cartCount
 }) {
-  const [menuOpen, setMenuOpen] =
-    useState(false)
+  const [
+    menuOpen,
+    setMenuOpen
+  ] = useState(false)
+
 
   const navigate =
     useNavigate()
+
 
   const {
     user,
@@ -52,6 +58,7 @@ function Navbar({
           className="navbar-logo"
           onClick={closeMenu}
         >
+
           <span>
             FRANCK
           </span>
@@ -59,6 +66,7 @@ function Navbar({
           <strong>
             SHOES
           </strong>
+
         </Link>
 
 
@@ -94,7 +102,20 @@ function Navbar({
           </Link>
 
 
+          {user && !isAdmin && (
+
+            <Link
+              to="/account/orders"
+              onClick={closeMenu}
+            >
+              Mes commandes
+            </Link>
+
+          )}
+
+
           {isAdmin && (
+
             <Link
               to="/admin"
               className="admin-link"
@@ -102,15 +123,20 @@ function Navbar({
             >
               Administration
             </Link>
+
           )}
 
 
           {user ? (
+
             <div className="navbar-user">
 
               <span className="navbar-user-name">
-                Bonjour {user.first_name}
+                Bonjour
+                {' '}
+                {user.first_name}
               </span>
+
 
               <button
                 type="button"
@@ -121,13 +147,16 @@ function Navbar({
               </button>
 
             </div>
+
           ) : (
+
             <Link
               to="/login"
               onClick={closeMenu}
             >
               Connexion
             </Link>
+
           )}
 
 
@@ -141,6 +170,7 @@ function Navbar({
             <span className="cart-count">
               {cartCount}
             </span>
+
           </Link>
 
         </div>

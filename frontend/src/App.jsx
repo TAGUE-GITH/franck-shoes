@@ -2,18 +2,19 @@ import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 
 import Home from './pages/Home'
 import ProductsPage from './pages/ProductsPage'
 import ProductPage from './pages/ProductPage'
 import CartPage from './pages/CartPage'
+import AboutPage from './pages/AboutPage'
 
 import './App.css'
 
 function App() {
   const [cart, setCart] = useState([])
 
-  // Ajouter un produit avec sa pointure
   function addToCart(product, size) {
     setCart((currentCart) => {
       const existingProduct = currentCart.find(
@@ -22,7 +23,6 @@ function App() {
           item.size === size
       )
 
-      // Le produit + cette pointure existe déjà
       if (existingProduct) {
         return currentCart.map((item) => {
           if (
@@ -31,7 +31,6 @@ function App() {
           ) {
             const currentQuantity = item.quantity ?? 1
 
-            // Ne pas dépasser le stock
             if (currentQuantity >= item.stock) {
               return item
             }
@@ -46,7 +45,6 @@ function App() {
         })
       }
 
-      // Nouveau produit dans le panier
       return [
         ...currentCart,
         {
@@ -58,7 +56,6 @@ function App() {
     })
   }
 
-  // Augmenter la quantité
   function increaseQuantity(productId, size) {
     setCart((currentCart) =>
       currentCart.map((item) => {
@@ -83,7 +80,6 @@ function App() {
     )
   }
 
-  // Diminuer la quantité
   function decreaseQuantity(productId, size) {
     setCart((currentCart) =>
       currentCart
@@ -106,7 +102,6 @@ function App() {
     )
   }
 
-  // Supprimer complètement une ligne
   function removeFromCart(productId, size) {
     setCart((currentCart) =>
       currentCart.filter(
@@ -119,7 +114,6 @@ function App() {
     )
   }
 
-  // Nombre total d'articles dans le panier
   const cartCount = cart.reduce(
     (total, item) =>
       total + (item.quantity ?? 0),
@@ -132,23 +126,16 @@ function App() {
 
       <Routes>
 
-        {/* ACCUEIL */}
         <Route
           path="/"
-          element={
-            <Home />
-          }
+          element={<Home />}
         />
 
-        {/* CATALOGUE */}
         <Route
           path="/products"
-          element={
-            <ProductsPage />
-          }
+          element={<ProductsPage />}
         />
 
-        {/* DÉTAIL D'UN PRODUIT */}
         <Route
           path="/products/:id"
           element={
@@ -158,7 +145,11 @@ function App() {
           }
         />
 
-        {/* PANIER */}
+        <Route
+          path="/about"
+          element={<AboutPage />}
+        />
+
         <Route
           path="/cart"
           element={
@@ -172,6 +163,8 @@ function App() {
         />
 
       </Routes>
+
+      <Footer />
     </>
   )
 }

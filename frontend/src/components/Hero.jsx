@@ -1,5 +1,7 @@
-import './Hero.css'
 import { Link } from 'react-router-dom'
+
+import './Hero.css'
+
 
 function Hero() {
   return (
@@ -8,46 +10,70 @@ function Hero() {
       <div className="hero-content">
 
         <span className="hero-badge">
-          Nouvelle collection 2026
+          Nouvelle collection
         </span>
+
 
         <h1>
           Trouve la paire
-          <span> qui te ressemble.</span>
+
+          <span>
+            {' '}
+            qui te ressemble.
+          </span>
         </h1>
 
+
         <p className="hero-description">
-          Découvre une sélection de chaussures pensée pour
-          combiner style, confort et performance au quotidien.
+          Découvre une sélection de
+          chaussures pensée pour combiner
+          style, confort et performance
+          au quotidien.
         </p>
+
 
         <div className="hero-actions">
 
           <Link
-  to="/products"
-  className="hero-primary-button"
->
-  Découvrir la collection
-</Link>
+            to="/products"
+            className="hero-primary-button"
+          >
+            Découvrir la collection
+          </Link>
+
+
           <Link
-  to="/products"
-  className="hero-secondary-button"
->
-  Voir les nouveautés
-  <span>→</span>
-</Link>
+            to="/products"
+            className="hero-secondary-button"
+          >
+            Voir les nouveautés
+
+            <span>
+              →
+            </span>
+          </Link>
 
         </div>
 
+
         <div className="hero-features">
 
-          <span>Livraison rapide</span>
-          <span>Retours faciles</span>
-          <span>Paiement sécurisé</span>
+          <span>
+            Livraison au Cameroun
+          </span>
+
+          <span>
+            Retours faciles
+          </span>
+
+          <span>
+            Paiement sécurisé
+          </span>
 
         </div>
 
       </div>
+
 
       <div className="hero-visual">
 
@@ -55,13 +81,21 @@ function Hero() {
 
           <img
             src="https://images.unsplash.com/photo-1542291026-7eec264c27ff"
-            alt="Chaussure rouge de la nouvelle collection"
+            alt="Chaussure de la collection Franck Shoes"
             className="hero-image"
           />
 
+
           <div className="hero-floating-card">
-            <span>À partir de</span>
-            <strong>95 €</strong>
+
+            <span>
+              À partir de
+            </span>
+
+            <strong>
+              35 000 FCFA
+            </strong>
+
           </div>
 
         </div>
@@ -71,5 +105,6 @@ function Hero() {
     </section>
   )
 }
+
 
 export default Hero

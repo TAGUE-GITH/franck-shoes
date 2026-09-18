@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import {
+  useState
+} from 'react'
 
 import {
   Route,
@@ -9,6 +11,7 @@ import {
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import AdminRoute from './components/AdminRoute'
+import AdminLayout from './components/AdminLayout'
 
 
 import Home from './pages/Home'
@@ -19,7 +22,10 @@ import AboutPage from './pages/AboutPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
+
 import AdminDashboardPage from './pages/AdminDashboardPage'
+import AdminProductsPage from './pages/AdminProductsPage'
+import AdminProductFormPage from './pages/AdminProductFormPage'
 
 
 import './App.css'
@@ -34,30 +40,47 @@ function App() {
     product,
     size
   ) {
+    const selectedVariant =
+      product.sizes.find(
+        (variant) =>
+          Number(variant.size) ===
+          Number(size)
+      )
+
+
+    if (
+      !selectedVariant ||
+      selectedVariant.stock <= 0
+    ) {
+      return
+    }
+
+
     setCart(
       (currentCart) => {
         const existingProduct =
           currentCart.find(
             (item) =>
               item.id === product.id &&
-              item.size === size
+              Number(item.size) ===
+              Number(size)
           )
 
 
         if (existingProduct) {
+
           return currentCart.map(
             (item) => {
+
               if (
                 item.id === product.id &&
-                item.size === size
+                Number(item.size) ===
+                Number(size)
               ) {
-                const currentQuantity =
-                  item.quantity ?? 1
-
 
                 if (
-                  currentQuantity >=
-                  item.stock
+                  item.quantity >=
+                  selectedVariant.stock
                 ) {
                   return item
                 }
@@ -67,7 +90,10 @@ function App() {
                   ...item,
 
                   quantity:
-                    currentQuantity + 1
+                    item.quantity + 1,
+
+                  stock:
+                    selectedVariant.stock
                 }
               }
 
@@ -86,6 +112,9 @@ function App() {
 
             size,
 
+            stock:
+              selectedVariant.stock,
+
             quantity: 1
           }
         ]
@@ -102,16 +131,15 @@ function App() {
       (currentCart) =>
         currentCart.map(
           (item) => {
+
             if (
               item.id === productId &&
-              item.size === size
+              Number(item.size) ===
+              Number(size)
             ) {
-              const currentQuantity =
-                item.quantity ?? 1
-
 
               if (
-                currentQuantity >=
+                item.quantity >=
                 item.stock
               ) {
                 return item
@@ -122,7 +150,7 @@ function App() {
                 ...item,
 
                 quantity:
-                  currentQuantity + 1
+                  item.quantity + 1
               }
             }
 
@@ -143,19 +171,18 @@ function App() {
         currentCart
           .map(
             (item) => {
+
               if (
                 item.id === productId &&
-                item.size === size
+                Number(item.size) ===
+                Number(size)
               ) {
-                const currentQuantity =
-                  item.quantity ?? 1
-
 
                 return {
                   ...item,
 
                   quantity:
-                    currentQuantity - 1
+                    item.quantity - 1
                 }
               }
 
@@ -181,7 +208,8 @@ function App() {
           (item) =>
             !(
               item.id === productId &&
-              item.size === size
+              Number(item.size) ===
+              Number(size)
             )
         )
     )
@@ -192,7 +220,7 @@ function App() {
     cart.reduce(
       (total, item) =>
         total +
-        (item.quantity ?? 0),
+        item.quantity,
 
       0
     )
@@ -290,11 +318,44 @@ function App() {
           element={
             <AdminRoute>
 
-              <AdminDashboardPage />
+              <AdminLayout />
 
             </AdminRoute>
           }
-        />
+        >
+
+          <Route
+            index
+            element={
+              <AdminDashboardPage />
+            }
+          />
+
+
+          <Route
+            path="products"
+            element={
+              <AdminProductsPage />
+            }
+          />
+
+
+          <Route
+            path="products/new"
+            element={
+              <AdminProductFormPage />
+            }
+          />
+
+
+          <Route
+            path="products/:id/edit"
+            element={
+              <AdminProductFormPage />
+            }
+          />
+
+        </Route>
 
       </Routes>
 

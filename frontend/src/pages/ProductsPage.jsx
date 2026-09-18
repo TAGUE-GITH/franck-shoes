@@ -1,61 +1,162 @@
-import { useState } from 'react'
+import {
+  useEffect,
+  useState
+} from 'react'
 
 import ProductCard from '../components/ProductCard'
-import products from '../data/products'
+
+import {
+  getProducts
+} from '../services/productService'
 
 import './ProductsPage.css'
 
+
 function ProductsPage() {
-  const [search, setSearch] = useState('')
-  const [brand, setBrand] = useState('all')
-  const [availability, setAvailability] = useState('all')
-  const [sort, setSort] = useState('default')
+  const [products, setProducts] =
+    useState([])
+
+  const [loading, setLoading] =
+    useState(true)
+
+  const [error, setError] =
+    useState('')
+
+  const [search, setSearch] =
+    useState('')
+
+  const [brand, setBrand] =
+    useState('all')
+
+  const [
+    availability,
+    setAvailability
+  ] = useState('all')
+
+  const [sort, setSort] =
+    useState('default')
+
+
+  useEffect(() => {
+    loadProducts()
+  }, [])
+
+
+  async function loadProducts() {
+    try {
+      setLoading(true)
+
+      setError('')
+
+      const data =
+        await getProducts()
+
+      setProducts(data)
+    } catch (error) {
+      setError(
+        error.message
+      )
+    } finally {
+      setLoading(false)
+    }
+  }
+
 
   const brands = [
-    ...new Set(products.map((product) => product.brand))
+    ...new Set(
+      products.map(
+        (product) =>
+          product.brand
+      )
+    )
   ]
 
-  let filteredProducts = products.filter((product) => {
-    const matchesSearch =
-      product.name
-        .toLowerCase()
-        .includes(search.toLowerCase()) ||
-      product.brand
-        .toLowerCase()
-        .includes(search.toLowerCase())
 
-    const matchesBrand =
-      brand === 'all' || product.brand === brand
+  let filteredProducts =
+    products.filter(
+      (product) => {
+        const searchValue =
+          search
+            .trim()
+            .toLowerCase()
 
-    const matchesAvailability =
-      availability === 'all' ||
-      (availability === 'available' && product.stock > 0) ||
-      (availability === 'out' && product.stock === 0)
 
-    return (
-      matchesSearch &&
-      matchesBrand &&
-      matchesAvailability
+        const matchesSearch =
+          product.name
+            .toLowerCase()
+            .includes(
+              searchValue
+            ) ||
+          product.brand
+            .toLowerCase()
+            .includes(
+              searchValue
+            )
+
+
+        const matchesBrand =
+          brand === 'all' ||
+          product.brand === brand
+
+
+        const matchesAvailability =
+          availability === 'all' ||
+
+          (
+            availability ===
+              'available' &&
+            product.stock > 0
+          ) ||
+
+          (
+            availability ===
+              'out' &&
+            product.stock === 0
+          )
+
+
+        return (
+          matchesSearch &&
+          matchesBrand &&
+          matchesAvailability
+        )
+      }
     )
-  })
+
 
   if (sort === 'price-asc') {
-    filteredProducts = [...filteredProducts].sort(
-      (a, b) => a.price - b.price
+    filteredProducts = [
+      ...filteredProducts
+    ].sort(
+      (a, b) =>
+        Number(a.price) -
+        Number(b.price)
     )
   }
+
 
   if (sort === 'price-desc') {
-    filteredProducts = [...filteredProducts].sort(
-      (a, b) => b.price - a.price
+    filteredProducts = [
+      ...filteredProducts
+    ].sort(
+      (a, b) =>
+        Number(b.price) -
+        Number(a.price)
     )
   }
 
+
   if (sort === 'name') {
-    filteredProducts = [...filteredProducts].sort(
-      (a, b) => a.name.localeCompare(b.name)
+    filteredProducts = [
+      ...filteredProducts
+    ].sort(
+      (a, b) =>
+        a.name.localeCompare(
+          b.name
+        )
     )
   }
+
 
   function resetFilters() {
     setSearch('')
@@ -63,6 +164,7 @@ function ProductsPage() {
     setAvailability('all')
     setSort('default')
   }
+
 
   return (
     <main className="products-page">
@@ -78,11 +180,13 @@ function ProductsPage() {
         </h1>
 
         <p>
-          Explore notre collection de chaussures et
-          trouve le modèle qui correspond à ton style.
+          Explore notre collection et
+          trouve la chaussure qui
+          correspond à ton style.
         </p>
 
       </header>
+
 
       <section className="catalog-tools">
 
@@ -97,7 +201,9 @@ function ProductsPage() {
             placeholder="Rechercher une chaussure..."
             value={search}
             onChange={(event) =>
-              setSearch(event.target.value)
+              setSearch(
+                event.target.value
+              )
             }
           />
 
@@ -105,7 +211,9 @@ function ProductsPage() {
             <button
               type="button"
               className="clear-search"
-              onClick={() => setSearch('')}
+              onClick={() =>
+                setSearch('')
+              }
               aria-label="Effacer la recherche"
             >
               ×
@@ -113,6 +221,7 @@ function ProductsPage() {
           )}
 
         </div>
+
 
         <div className="catalog-filters">
 
@@ -126,25 +235,31 @@ function ProductsPage() {
               id="brand"
               value={brand}
               onChange={(event) =>
-                setBrand(event.target.value)
+                setBrand(
+                  event.target.value
+                )
               }
             >
+
               <option value="all">
                 Toutes les marques
               </option>
 
-              {brands.map((brandName) => (
-                <option
-                  key={brandName}
-                  value={brandName}
-                >
-                  {brandName}
-                </option>
-              ))}
+              {brands.map(
+                (brandName) => (
+                  <option
+                    key={brandName}
+                    value={brandName}
+                  >
+                    {brandName}
+                  </option>
+                )
+              )}
 
             </select>
 
           </div>
+
 
           <div className="filter-group">
 
@@ -156,9 +271,12 @@ function ProductsPage() {
               id="availability"
               value={availability}
               onChange={(event) =>
-                setAvailability(event.target.value)
+                setAvailability(
+                  event.target.value
+                )
               }
             >
+
               <option value="all">
                 Tous
               </option>
@@ -170,9 +288,11 @@ function ProductsPage() {
               <option value="out">
                 Rupture de stock
               </option>
+
             </select>
 
           </div>
+
 
           <div className="filter-group">
 
@@ -184,9 +304,12 @@ function ProductsPage() {
               id="sort"
               value={sort}
               onChange={(event) =>
-                setSort(event.target.value)
+                setSort(
+                  event.target.value
+                )
               }
             >
+
               <option value="default">
                 Par défaut
               </option>
@@ -202,6 +325,7 @@ function ProductsPage() {
               <option value="name">
                 Nom A-Z
               </option>
+
             </select>
 
           </div>
@@ -210,75 +334,131 @@ function ProductsPage() {
 
       </section>
 
+
       <section className="catalog-results">
 
-        <div className="results-header">
+        {loading ? (
 
-          <p>
-            <strong>
-              {filteredProducts.length}
-            </strong>
+          <div className="no-products">
+            <h2>
+              Chargement...
+            </h2>
+          </div>
 
-            {' '}
-            produit
-            {filteredProducts.length > 1 ? 's' : ''}
-          </p>
+        ) : error ? (
 
-          {(search ||
-            brand !== 'all' ||
-            availability !== 'all' ||
-            sort !== 'default') && (
+          <div className="no-products">
+
+            <h2>
+              Impossible de charger
+              les produits
+            </h2>
+
+            <p>
+              {error}
+            </p>
 
             <button
               type="button"
-              className="reset-filters"
-              onClick={resetFilters}
+              onClick={loadProducts}
             >
-              Réinitialiser les filtres
+              Réessayer
             </button>
-
-          )}
-
-        </div>
-
-        {filteredProducts.length > 0 ? (
-
-          <div className="products-page-grid">
-
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-              />
-            ))}
 
           </div>
 
         ) : (
 
-          <div className="no-products">
+          <>
 
-            <div className="no-products-icon">
-              👟
+            <div className="results-header">
+
+              <p>
+                <strong>
+                  {
+                    filteredProducts.length
+                  }
+                </strong>
+
+                {' '}
+
+                produit
+                {
+                  filteredProducts.length > 1
+                    ? 's'
+                    : ''
+                }
+              </p>
+
+
+              {(
+                search ||
+                brand !== 'all' ||
+                availability !== 'all' ||
+                sort !== 'default'
+              ) && (
+
+                <button
+                  type="button"
+                  className="reset-filters"
+                  onClick={
+                    resetFilters
+                  }
+                >
+                  Réinitialiser les filtres
+                </button>
+
+              )}
+
             </div>
 
-            <h2>
-              Aucun produit trouvé
-            </h2>
 
-            <p>
-              Essaie de modifier ta recherche
-              ou tes filtres.
-            </p>
+            {filteredProducts.length > 0 ? (
 
-            <button
-              type="button"
-              onClick={resetFilters}
-            >
-              Voir toutes les chaussures
-            </button>
+              <div className="products-page-grid">
 
-          </div>
+                {filteredProducts.map(
+                  (product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                    />
+                  )
+                )}
+
+              </div>
+
+            ) : (
+
+              <div className="no-products">
+
+                <div className="no-products-icon">
+                  👟
+                </div>
+
+                <h2>
+                  Aucun produit trouvé
+                </h2>
+
+                <p>
+                  Modifie ta recherche
+                  ou tes filtres.
+                </p>
+
+                <button
+                  type="button"
+                  onClick={
+                    resetFilters
+                  }
+                >
+                  Voir toutes les chaussures
+                </button>
+
+              </div>
+
+            )}
+
+          </>
 
         )}
 
@@ -287,5 +467,6 @@ function ProductsPage() {
     </main>
   )
 }
+
 
 export default ProductsPage

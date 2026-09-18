@@ -1,105 +1,128 @@
 import { useState } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 
 import Navbar from './components/Navbar'
+
 import Home from './pages/Home'
-import CartPage from './pages/CartPage'
-import ProductPage from './pages/ProductPage'
 import ProductsPage from './pages/ProductsPage'
+import ProductPage from './pages/ProductPage'
+import CartPage from './pages/CartPage'
 
 import './App.css'
 
 function App() {
   const [cart, setCart] = useState([])
 
+  // Ajouter un produit avec sa pointure
   function addToCart(product, size) {
-  setCart((currentCart) => {
-
-    const existingProduct = currentCart.find(
-      (item) =>
-        item.id === product.id &&
-        item.size === size
-    )
-
-    if (existingProduct) {
-      return currentCart.map((item) => {
-        if (
+    setCart((currentCart) => {
+      const existingProduct = currentCart.find(
+        (item) =>
           item.id === product.id &&
           item.size === size
+      )
+
+      // Le produit + cette pointure existe déjà
+      if (existingProduct) {
+        return currentCart.map((item) => {
+          if (
+            item.id === product.id &&
+            item.size === size
+          ) {
+            const currentQuantity = item.quantity ?? 1
+
+            // Ne pas dépasser le stock
+            if (currentQuantity >= item.stock) {
+              return item
+            }
+
+            return {
+              ...item,
+              quantity: currentQuantity + 1
+            }
+          }
+
+          return item
+        })
+      }
+
+      // Nouveau produit dans le panier
+      return [
+        ...currentCart,
+        {
+          ...product,
+          size,
+          quantity: 1
+        }
+      ]
+    })
+  }
+
+  // Augmenter la quantité
+  function increaseQuantity(productId, size) {
+    setCart((currentCart) =>
+      currentCart.map((item) => {
+        if (
+          item.id === productId &&
+          item.size === size
         ) {
-          if (item.quantity >= item.stock) {
+          const currentQuantity = item.quantity ?? 1
+
+          if (currentQuantity >= item.stock) {
             return item
           }
 
           return {
             ...item,
-            quantity: item.quantity + 1
+            quantity: currentQuantity + 1
           }
         }
 
         return item
       })
-    }
-
-    return [
-      ...currentCart,
-      {
-        ...product,
-        size: size,
-        quantity: 1
-      }
-    ]
-  })
-}
-
-     
-
- function increaseQuantity(productId, size) {
-  setCart((currentCart) =>
-    currentCart.map((item) =>
-      item.id === productId && item.size === size
-        ? {
-            ...item,
-            quantity:
-              item.quantity < item.stock
-                ? item.quantity + 1
-                : item.quantity
-          }
-        : item
     )
-  )
-}
+  }
 
-function decreaseQuantity(productId, size) {
-  setCart((currentCart) =>
-    currentCart
-      .map((item) =>
-        item.id === productId && item.size === size
-          ? {
+  // Diminuer la quantité
+  function decreaseQuantity(productId, size) {
+    setCart((currentCart) =>
+      currentCart
+        .map((item) => {
+          if (
+            item.id === productId &&
+            item.size === size
+          ) {
+            const currentQuantity = item.quantity ?? 1
+
+            return {
               ...item,
-              quantity: item.quantity - 1
+              quantity: currentQuantity - 1
             }
-          : item
-      )
-      .filter((item) => item.quantity > 0)
-  )
-}
+          }
 
-function removeFromCart(productId, size) {
-  setCart((currentCart) =>
-    currentCart.filter(
-      (item) =>
-        !(
-          item.id === productId &&
-          item.size === size
-        )
+          return item
+        })
+        .filter((item) => item.quantity > 0)
     )
-  )
-}
+  }
+
+  // Supprimer complètement une ligne
+  function removeFromCart(productId, size) {
+    setCart((currentCart) =>
+      currentCart.filter(
+        (item) =>
+          !(
+            item.id === productId &&
+            item.size === size
+          )
+      )
+    )
+  }
+
+  // Nombre total d'articles dans le panier
   const cartCount = cart.reduce(
-    (total, item) => {
-      return total + (item.quantity ?? 0)
-    },
+    (total, item) =>
+      total + (item.quantity ?? 0),
     0
   )
 
@@ -109,46 +132,46 @@ function removeFromCart(productId, size) {
 
       <Routes>
 
-  <Route
-    path="/"
-    element={
-      <Home
-        onAddToCart={addToCart}
-      />
-    }
-  />
+        {/* ACCUEIL */}
+        <Route
+          path="/"
+          element={
+            <Home />
+          }
+        />
 
-  <Route
-    path="/products"
-    element={
-      <ProductsPage
-        onAddToCart={addToCart}
-      />
-    }
-  />
+        {/* CATALOGUE */}
+        <Route
+          path="/products"
+          element={
+            <ProductsPage />
+          }
+        />
 
-  <Route
-    path="/products/:id"
-    element={
-      <ProductPage
-        onAddToCart={addToCart}
-      />
-    }
-  />
+        {/* DÉTAIL D'UN PRODUIT */}
+        <Route
+          path="/products/:id"
+          element={
+            <ProductPage
+              onAddToCart={addToCart}
+            />
+          }
+        />
 
-  <Route
-    path="/cart"
-    element={
-      <CartPage
-        cart={cart}
-        onIncrease={increaseQuantity}
-        onDecrease={decreaseQuantity}
-        onRemove={removeFromCart}
-      />
-    }
-  />
+        {/* PANIER */}
+        <Route
+          path="/cart"
+          element={
+            <CartPage
+              cart={cart}
+              onIncrease={increaseQuantity}
+              onDecrease={decreaseQuantity}
+              onRemove={removeFromCart}
+            />
+          }
+        />
 
-</Routes>
+      </Routes>
     </>
   )
 }

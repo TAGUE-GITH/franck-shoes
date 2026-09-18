@@ -1,0 +1,181 @@
+.order-success-page {
+  min-height:
+    calc(100vh - 76px);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 60px 20px;
+
+  background-color: #f6f6f6;
+}
+
+
+.order-success-card {
+  width: 100%;
+
+  max-width: 650px;
+
+  padding: 50px;
+
+  background-color: white;
+
+  border:
+    1px solid #e8e8e8;
+
+  border-radius: 26px;
+
+  text-align: center;
+
+  box-shadow:
+    0 20px 50px
+    rgba(0, 0, 0, 0.07);
+}
+
+
+.order-success-icon {
+  width: 70px;
+  height: 70px;
+
+  margin:
+    0 auto 25px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background-color: #eaf8ed;
+
+  color: #31783a;
+
+  border-radius: 50%;
+
+  font-size: 2rem;
+
+  font-weight: 800;
+}
+
+
+.order-success-card > span {
+  color: #777;
+
+  font-size: 0.75rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.3px;
+}
+
+
+.order-success-card h1 {
+  margin:
+    12px 0 15px;
+
+  font-size:
+    clamp(
+      2.2rem,
+      5vw,
+      3.5rem
+    );
+
+  letter-spacing: -2px;
+}
+
+
+.order-success-card > p {
+  color: #777;
+
+  line-height: 1.7;
+}
+
+
+.order-success-summary {
+  margin:
+    35px 0;
+
+  padding:
+    20px 0;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  border-top:
+    1px solid #eee;
+
+  border-bottom:
+    1px solid #eee;
+}
+
+
+.order-success-summary > div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.order-success-summary span {
+  color: #888;
+
+  font-size: 0.75rem;
+}
+
+
+.order-success-actions {
+  display: flex;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+}
+
+
+.order-success-actions a {
+  padding: 13px 20px;
+
+  background-color: #111;
+
+  color: white;
+
+  border-radius: 50px;
+
+  text-decoration: none;
+
+  font-weight: 600;
+}
+
+
+.order-success-actions a.secondary {
+  background-color: #f1f1f1;
+
+  color: #111;
+}
+
+
+@media (max-width: 600px) {
+
+  .order-success-card {
+    padding: 35px 22px;
+  }
+
+
+  .order-success-summary {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+}

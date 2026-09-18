@@ -44,9 +44,7 @@ function Cart({
 
         <span className="cart-items-count">
           {cart.length}
-
           {' '}
-
           produit
           {cart.length > 1
             ? 's'
@@ -242,7 +240,7 @@ function Cart({
               </span>
 
               <span>
-                Calculée plus tard
+                Calculée à l'étape suivante
               </span>
 
             </div>
@@ -251,7 +249,7 @@ function Cart({
             <div className="summary-total">
 
               <span>
-                Total
+                Sous-total
               </span>
 
               <strong>
@@ -261,16 +259,16 @@ function Cart({
             </div>
 
 
-            <button
-              type="button"
+            <Link
+              to="/checkout"
               className="checkout-button"
             >
-              Commander
-            </button>
+              Passer la commande
+            </Link>
 
 
             <p className="secure-payment">
-              Paiement sécurisé
+              Paiement à la livraison
             </p>
 
           </aside>

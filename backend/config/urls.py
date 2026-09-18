@@ -1,7 +1,13 @@
 from django.conf import settings
+
 from django.conf.urls.static import static
+
 from django.contrib import admin
-from django.urls import include, path
+
+from django.urls import (
+    include,
+    path,
+)
 
 
 urlpatterns = [
@@ -12,12 +18,23 @@ urlpatterns = [
 
     path(
         'api/products/',
-        include('products.urls')
+        include(
+            'products.urls'
+        )
     ),
 
     path(
         'api/auth/',
-        include('accounts.urls')
+        include(
+            'accounts.urls'
+        )
+    ),
+
+    path(
+        'api/orders/',
+        include(
+            'orders.urls'
+        )
     ),
 ]
 
@@ -25,5 +42,6 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL,
-        document_root=settings.MEDIA_ROOT
+        document_root=
+            settings.MEDIA_ROOT
     )

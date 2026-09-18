@@ -10,8 +10,10 @@ import {
 
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+
 import AdminRoute from './components/AdminRoute'
 import AdminLayout from './components/AdminLayout'
+import ProtectedRoute from './components/ProtectedRoute'
 
 
 import Home from './pages/Home'
@@ -22,6 +24,9 @@ import AboutPage from './pages/AboutPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
+
+import CheckoutPage from './pages/CheckoutPage'
+import OrderSuccessPage from './pages/OrderSuccessPage'
 
 import AdminDashboardPage from './pages/AdminDashboardPage'
 import AdminProductsPage from './pages/AdminProductsPage'
@@ -216,6 +221,11 @@ function App() {
   }
 
 
+  function clearCart() {
+    setCart([])
+  }
+
+
   const cartCount =
     cart.reduce(
       (total, item) =>
@@ -309,6 +319,35 @@ function App() {
                 removeFromCart
               }
             />
+          }
+        />
+
+
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute>
+
+              <CheckoutPage
+                cart={cart}
+                onClearCart={
+                  clearCart
+                }
+              />
+
+            </ProtectedRoute>
+          }
+        />
+
+
+        <Route
+          path="/order-success/:id"
+          element={
+            <ProtectedRoute>
+
+              <OrderSuccessPage />
+
+            </ProtectedRoute>
           }
         />
 

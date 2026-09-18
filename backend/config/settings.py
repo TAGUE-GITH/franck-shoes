@@ -9,6 +9,7 @@ SECRET_KEY = 'django-insecure-franck-shoes-development-key'
 
 DEBUG = True
 
+
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
@@ -23,13 +24,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Applications externes
     'rest_framework',
     'corsheaders',
 
-    # Applications du projet
     'products',
     'accounts',
+    'orders',
 ]
 
 
@@ -52,7 +52,8 @@ ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'BACKEND':
+            'django.template.backends.django.DjangoTemplates',
 
         'DIRS': [],
 
@@ -74,24 +75,34 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE':
+            'django.db.backends.sqlite3',
+
+        'NAME':
+            BASE_DIR / 'db.sqlite3',
     }
 }
 
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME':
+            'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
+
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME':
+            'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
+
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME':
+            'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
+
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME':
+            'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 
@@ -113,7 +124,9 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = (
+    'django.db.models.BigAutoField'
+)
 
 
 CORS_ALLOWED_ORIGINS = [
@@ -139,9 +152,15 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'ACCESS_TOKEN_LIFETIME':
+        timedelta(
+            minutes=30
+        ),
 
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'REFRESH_TOKEN_LIFETIME':
+        timedelta(
+            days=7
+        ),
 
     'AUTH_HEADER_TYPES': (
         'Bearer',
